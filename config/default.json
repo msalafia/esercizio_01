@@ -1,0 +1,9 @@
+{
+    "restApiConfig" : {
+        "host" : "localhost",
+        "port" : 8080
+    },
+    "dbConfig" : {
+        "file_name" : "exercise01.sqlite"
+    }
+}
