@@ -27,3 +27,33 @@ where
 order by records.id
 limit $limit
 offset $offset`;
+
+module.exports.AggregateByAgeQueryString = `select 
+sum(capital_gain) as capital_gain_sum,
+avg(capital_gain) as capital_gain_avg,
+sum(capital_loss) as capital_loss_sum,
+avg(capital_loss) as capital_loss_avg,
+count(case when over_50k == 1 then 1 end) over_50k_count,
+count(case when over_50k == 0 then 1 end) under_50k_count
+from records
+where age == $age`
+
+module.exports.AggregateByEducationLevelIdQueryString = `select 
+sum(capital_gain) as capital_gain_sum,
+avg(capital_gain) as capital_gain_avg,
+sum(capital_loss) as capital_loss_sum,
+avg(capital_loss) as capital_loss_avg,
+count(case when over_50k == 1 then 1 end) over_50k_count,
+count(case when over_50k == 0 then 1 end) under_50k_count
+from records
+where education_level_id == $education_lvl_id`
+
+module.exports.AggregateByOccupationIdQueryString = `select 
+sum(capital_gain) as capital_gain_sum,
+avg(capital_gain) as capital_gain_avg,
+sum(capital_loss) as capital_loss_sum,
+avg(capital_loss) as capital_loss_avg,
+count(case when over_50k == 1 then 1 end) over_50k_count,
+count(case when over_50k == 0 then 1 end) under_50k_count
+from records
+where occupation_id == $occupation_id`

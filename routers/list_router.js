@@ -1,6 +1,7 @@
 const express = require('express');
 const sqlite3 = require('sqlite3').verbose();
 const queries = require('../db/queries/queries');
+const { isInteger } = require("./utility/utility.js");
 
 const path = require("path");
 const config = require("config");
@@ -17,7 +18,6 @@ router.get('/', (req, res) => {
     let offset = isInteger(req.query.offset) ? req.query.offset : DEFAULT_OFFSET;
     let count = isInteger(req.query.count) ? req.query.count : DEFAULT_LIMIT;
 
-    //TODO: check string for sql injection
     const listAllStr = queries.ListAllQueryString;
 
     let db = new sqlite3.Database(db_filename, (err) => {
@@ -33,7 +33,7 @@ router.get('/', (req, res) => {
     db.all(listAllStr, { $limit: count, $offset: offset }, (err, rows) => {
         if (err) {
             console.log(err.message);
-            res.status(500).send(err);
+            return res.status(500).send(err);
         }
 
         let results = {
@@ -54,7 +54,5 @@ router.get('/', (req, res) => {
     })
     
 });
-
-const isInteger = (str) => !isNaN(str) && Number.isInteger(+str);
 
 module.exports = router;

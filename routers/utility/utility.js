@@ -1,0 +1,1 @@
+module.exports.isInteger = (str) => !isNaN(str) && Number.isInteger(+str);
