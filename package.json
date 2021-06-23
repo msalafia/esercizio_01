@@ -19,6 +19,7 @@
   "homepage": "https://github.com/msalafia/esercizio_01#readme",
   "dependencies": {
     "config": "^3.3.6",
+    "csv-stringify": "^5.6.2",
     "express": "^4.17.1",
     "sqlite3": "^5.0.2"
   }

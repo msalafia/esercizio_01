@@ -14,6 +14,10 @@ const DEFAULT_LIMIT = 20;
 
 let db_filename = path.join(__dirname, DB_FOLDER_PATH + config.get("dbConfig.file_name"));
 
+//======================================
+// Routes ==============================
+//======================================
+
 router.get('/', (req, res) => {
     let offset = isInteger(req.query.offset) ? req.query.offset : DEFAULT_OFFSET;
     let count = isInteger(req.query.count) ? req.query.count : DEFAULT_LIMIT;
@@ -23,7 +27,7 @@ router.get('/', (req, res) => {
     let db = new sqlite3.Database(db_filename, (err) => {
         if (err) {
             console.log(err.message);
-            res.status(500).send(err);
+            return res.status(500).send(err);
         }
 
         console.log("Connected to the db");
@@ -47,7 +51,7 @@ router.get('/', (req, res) => {
 
     db.close((err) => {
         if (err) {
-            console.log(err.message);
+            return console.log(err.message);
         }
 
         console.log("Db connection closed");

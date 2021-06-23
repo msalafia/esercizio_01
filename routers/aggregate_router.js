@@ -13,7 +13,7 @@ const DB_FOLDER_PATH = "../db/";
 let db_filename = path.join(__dirname, DB_FOLDER_PATH + config.get("dbConfig.file_name"));
 
 //======================================
-// Utilities ===========================
+// Aggregation Utilities ===============
 //======================================
 
 const AggregationType = {
@@ -22,11 +22,11 @@ const AggregationType = {
     OCCUPATION_ID: "occupation_id"
 }
 
+Object.freeze(AggregationType);
+
 function isAggregationType(str) {
     return Object.values(AggregationType).includes(str);
 }
-
-Object.freeze(AggregationType);
 
 function getAggregationResult(aggrType, queryStr, params, callback) {
 
@@ -37,7 +37,7 @@ function getAggregationResult(aggrType, queryStr, params, callback) {
     let db = new sqlite3.Database(db_filename, (err) => {
         if (err) {
             console.log(err.message);
-            res.status(500).send(err);
+            return res.status(500).send(err);
         }
 
         console.log("Connected to the db");
@@ -46,7 +46,7 @@ function getAggregationResult(aggrType, queryStr, params, callback) {
     db.get(queryStr, params, (err, rows) => {
         if (err) {
             console.log(err.message);
-            callback(err, undefined);
+            return callback(err, undefined);
         }
 
         let results = {
@@ -61,6 +61,7 @@ function getAggregationResult(aggrType, queryStr, params, callback) {
     db.close((err) => {
         if (err) {
             console.log(err.message);
+            return callback(err, undefined);
         }
 
         console.log("Db connection closed");
