@@ -1,5 +1,4 @@
-module.exports.buildListAllQueryString = function (offset, limit) {
-    return `select 
+module.exports.ListAllQueryString = `select 
     records.id, 
     records.age, 
     workclasses.name as workclass, 
@@ -26,6 +25,5 @@ where
     records.sex_id == sexes.id and
     records.workclass_id == workclasses.id
 order by records.id
-limit ${limit}
-offset ${offset}`;
-}
+limit $limit
+offset $offset`;

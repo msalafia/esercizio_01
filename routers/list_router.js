@@ -18,7 +18,7 @@ router.get('/', (req, res) => {
     let count = isInteger(req.query.count) ? req.query.count : DEFAULT_LIMIT;
 
     //TODO: check string for sql injection
-    const listAllStr = queries.buildListAllQueryString(offset, count);
+    const listAllStr = queries.ListAllQueryString;
 
     let db = new sqlite3.Database(db_filename, (err) => {
         if (err) {
@@ -30,7 +30,7 @@ router.get('/', (req, res) => {
 
     });
 
-    db.all(listAllStr, (err, rows) => {
+    db.all(listAllStr, { $limit: count, $offset: offset }, (err, rows) => {
         if (err) {
             console.log(err.message);
             res.status(500).send(err);
