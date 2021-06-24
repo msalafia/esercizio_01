@@ -21,7 +21,7 @@ function writeCSVFile(writeStream, callback) {
     //remove everything after the ListAllQueryString query
     const listAllStr = queries.ListAllQueryString.replace(/limit[\s|\S]*/, '');
 
-    let db = new sqlite3.Database(db_filename, (err) => {
+    let db = new sqlite3.Database(db_filename, sqlite3.OPEN_READONLY, (err) => {
         if (err) {
             console.log(err.message);
             return callback(err, undefined);

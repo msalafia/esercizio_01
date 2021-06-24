@@ -34,7 +34,7 @@ function getAggregationResult(aggrType, queryStr, params, callback) {
     assert(typeof queryStr === "string", "Parameter 'queryStr' must be a String");
     assert(typeof params === "object" && Object.values(params).length !== 0, "Parameter 'params' must be a non-empty object");
 
-    let db = new sqlite3.Database(db_filename, (err) => {
+    let db = new sqlite3.Database(db_filename, sqlite3.OPEN_READONLY, (err) => {
         if (err) {
             console.log(err.message);
             return res.status(500).send(err);

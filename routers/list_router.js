@@ -24,7 +24,7 @@ router.get('/', (req, res) => {
 
     const listAllStr = queries.ListAllQueryString;
 
-    let db = new sqlite3.Database(db_filename, (err) => {
+    let db = new sqlite3.Database(db_filename, sqlite3.OPEN_READONLY, (err) => {
         if (err) {
             console.log(err.message);
             return res.status(500).send(err);
