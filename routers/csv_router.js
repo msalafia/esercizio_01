@@ -75,7 +75,14 @@ function writeCSVFile(writeStream, callback) {
 //======================================
 
 router.get("/", (req, res) => {
-    const CSV_TMP_PATH = path.join(__dirname, "./temp/csv_records" + Date.now() + ".csv");
+    const CSV_TMP_NAME = `csv_records_${Date.now()}.csv`;
+    const TEMP_FOLDER_PATH = path.join(__dirname, "./temp");
+    
+    if (!fs.existsSync(TEMP_FOLDER_PATH)) {
+        fs.mkdirSync(TEMP_FOLDER_PATH);
+    }
+
+    const CSV_TMP_PATH = path.join(TEMP_FOLDER_PATH, CSV_TMP_NAME);
     let writeStream = fs.createWriteStream(CSV_TMP_PATH);
     
     writeStream.on('finish', () => {
