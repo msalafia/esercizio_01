@@ -9,8 +9,6 @@ const config = require('config');
 let router = express.Router();
 
 const DB_FOLDER_PATH = "../db/";
-const CSV_TMP_PATH = path.join(__dirname, "./temp/csv_records.csv");
-
 let db_filename = path.join(__dirname, DB_FOLDER_PATH + config.get("dbConfig.file_name"));
 
 //======================================
@@ -77,13 +75,21 @@ function writeCSVFile(writeStream, callback) {
 //======================================
 
 router.get("/", (req, res) => {
+    const CSV_TMP_PATH = path.join(__dirname, "./temp/csv_records" + Date.now() + ".csv");
     let writeStream = fs.createWriteStream(CSV_TMP_PATH);
-    writeStream.on('finish', () => res.status(200).download(CSV_TMP_PATH, "csv_records.csv"));
+    
+    writeStream.on('finish', () => {
+        //Download the csv temp file after download completion 
+        res.status(200).download(CSV_TMP_PATH, "csv_records.csv", () => fs.unlinkSync(CSV_TMP_PATH));
+    });
 
     writeCSVFile(writeStream, (err) => {
         if(err) {
             console.log(err.message);
-            return res.status(500).send(err.message);
+            res.status(500).send(err.message);
+            //When error occurs destroy the stream and delete temp csv file
+            writeStream.destroy();
+            fs.unlinkSync(CSV_TMP_PATH);
         }
     });
 });
